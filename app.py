@@ -24,16 +24,18 @@ def transform_text(text):
     y = [ps.stem(i) for i in y if i not in stopwords.words('english') and i not in string.punctuation]
     return " ".join(y)
 
-# Load model and vectorizer using full paths
+# Load model and vectorizer using correct paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 try:
-    with open(os.path.join(BASE_DIR, '..', 'vectorizer.pkl'), 'rb') as f:
+    # Update the paths to the model and vectorizer files
+    with open(os.path.join(BASE_DIR, 'vectorizer.pkl'), 'rb') as f:
         tfidf = pickle.load(f)
-    with open(os.path.join(BASE_DIR, '..', 'model.pkl'), 'rb') as f:
+    with open(os.path.join(BASE_DIR, 'model.pkl'), 'rb') as f:
         model = pickle.load(f)
 except FileNotFoundError:
     st.error("❌ Required model/vectorizer files not found. Make sure 'vectorizer.pkl' and 'model.pkl' are present.")
+    st.stop()  # Stop execution if the files are not found
 
 st.title("📩 Email/SMS Spam Classifier")
 
